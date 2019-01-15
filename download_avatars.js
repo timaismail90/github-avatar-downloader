@@ -3,8 +3,18 @@ var secret = require('./secrets')
 var GITHUB_TOKEN = secret['GITHUB_TOKEN'];
 var fs = require('fs');
 
+
 console.log('Welcome to the GitHub Avatar Downloader!');
-function getRepoContributors(repoOwner, repoName, cb) {
+function getRepoContributors(cb) {
+
+  var repoOwner = process.argv[2];
+  var repoName = process.argv[3];
+
+  if (!repoOwner || !repoName) {
+    throw('You did not input a repo name and repo owner');
+  }
+
+
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
@@ -38,7 +48,7 @@ function getAvatarUrl(err, res, body){
   // ...
 
 
-getRepoContributors('jquery', 'jquery', getAvatarUrl);
+getRepoContributors(getAvatarUrl);
 
 
 
@@ -58,23 +68,3 @@ function downloadImageByURL(url, filePath) {
 
  downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "kvirani.jpg")
 
-
-// var request = require('request');
-
-
-// request.get('url')               // Note 1
-//        .on('error', function (err) {                                   // Note 2
-//          throw err;
-//        })
-//        .on('response', function (response) {                           // Note 3
-//          console.log('Response Status Code: ', response.statusCode);
-//        })
-//        .on('end', function(){
-
-//        })
-
-//        .pipe(fs.createWriteStream('./download.html'));
-
-//        console.log('Download completed')
-
-//                   // Note 4
